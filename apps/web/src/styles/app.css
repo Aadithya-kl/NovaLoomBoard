@@ -1,0 +1,2174 @@
+/* ---------- base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: var(--leading);
+  color: var(--graphite);
+  background: var(--paper);
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+kbd {
+  display: inline-block;
+  min-width: 18px;
+  padding: 0 5px;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: var(--surface-solid);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.app {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ---------- title bar ---------- */
+
+.titlebar {
+  flex: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  height: var(--titlebar-h);
+  padding-inline-start: var(--space-3);
+  background: var(--chrome);
+  border-bottom: 1px solid var(--line);
+  /* Empty space drags the window; Windows handles double-click to maximize. */
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+.titlebar button,
+.titlebar input,
+.titlebar .save-status {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+.titlebar-start,
+.titlebar-center,
+.titlebar-end {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 100%;
+}
+.titlebar-center {
+  gap: var(--space-3);
+  justify-content: center;
+}
+.titlebar-end {
+  justify-content: flex-end;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-inline-end: var(--space-2);
+}
+.brand-logo {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.brand-name {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.menubar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-inline-start: var(--space-2);
+  margin-inline-start: var(--space-1);
+  border-inline-start: 1px solid var(--line);
+  height: 20px;
+}
+.menubar-btn {
+  height: 28px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  font-size: var(--text-sm);
+  color: var(--graphite-2);
+  cursor: default;
+  transition: background var(--motion-fast) var(--ease);
+}
+.menubar-btn:hover {
+  background: var(--hover);
+}
+.menubar-btn:active,
+.menubar-btn[aria-expanded="true"] {
+  background: var(--pressed);
+}
+
+.board-title,
+.board-title-input {
+  position: relative;
+  height: 28px;
+  max-width: min(360px, 34vw);
+  padding: 0 var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+.board-title {
+  display: inline-flex;
+  align-items: center;
+  cursor: text;
+  transition: background var(--motion-fast) var(--ease);
+}
+.board-title-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.board-title:hover:not(:disabled) {
+  background: var(--hover);
+}
+.board-title:disabled {
+  cursor: default;
+}
+.board-title-input {
+  width: 260px;
+  border-color: var(--accent);
+  background: var(--surface-solid);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.save-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--text-xs);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.save-status svg {
+  flex: none;
+}
+.save-status[data-tone="warn"] {
+  color: var(--warn);
+}
+.save-status[data-tone="error"] {
+  color: var(--danger);
+  font-weight: 600;
+}
+.spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Window caption buttons, sized like the native Windows 11 ones. */
+.caption-buttons {
+  display: flex;
+  height: 100%;
+}
+.caption-btn {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--graphite);
+  cursor: default;
+  transition: background var(--motion-fast) linear, color var(--motion-fast) linear;
+}
+.caption-btn .glyph {
+  font-family: var(--font-glyphs);
+  font-size: 10px;
+  line-height: 1;
+}
+.caption-btn:hover {
+  background: var(--hover);
+}
+.caption-btn:active {
+  background: var(--pressed);
+}
+.caption-btn.close:hover {
+  background: var(--close-red);
+  color: #fff;
+}
+.caption-btn.close:active {
+  background: var(--close-red-pressed);
+  color: rgba(255, 255, 255, 0.85);
+}
+.caption-btn:focus-visible {
+  outline-offset: -2px;
+}
+
+/* Inactive window: quieter chrome, as native title bars do. */
+.titlebar[data-focused="false"] .brand,
+.titlebar[data-focused="false"] .menubar,
+.titlebar[data-focused="false"] .board-title,
+.titlebar[data-focused="false"] .caption-btn:not(:hover) {
+  opacity: 0.55;
+}
+
+/* ---------- workspace & board ---------- */
+
+.workspace {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.board {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: crosshair;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.board[data-tool="eraser"],
+.board[data-tool="laser"] {
+  cursor: none;
+}
+.board[data-tool="select"] {
+  cursor: default;
+}
+.board[data-tool="text"] {
+  cursor: text;
+}
+.board[data-tool="pan"],
+.board[data-space-pan="true"] {
+  cursor: grab;
+}
+.board[data-panning="true"] {
+  cursor: grabbing;
+}
+
+.empty-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: var(--space-5) 40px;
+  border-radius: 40px;
+  /* Paper halo so the background pattern does not run through the text. */
+  background: radial-gradient(farthest-side, var(--board-paper, #ffffff) 62%, transparent);
+  text-align: center;
+  pointer-events: none;
+  transition: opacity var(--motion-base) var(--ease);
+}
+.board:active ~ .empty-hint {
+  opacity: 0;
+}
+/* On a dark board the halo is the board colour and the words are light. */
+.board[data-dark="true"] ~ .empty-hint {
+  background: radial-gradient(farthest-side, var(--board-paper) 62%, transparent);
+}
+.board[data-dark="true"] ~ .empty-hint .empty-title,
+.board[data-dark="true"] ~ .empty-hint .empty-keys {
+  color: rgba(255, 255, 255, 0.5);
+}
+.empty-title {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--faint);
+}
+.empty-keys {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--faint);
+}
+.empty-keys span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+/* ---------- floating panels ---------- */
+
+.panel {
+  position: absolute;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+}
+.panel-sep {
+  align-self: stretch;
+  width: 1px;
+  margin: 6px 2px;
+  background: var(--line);
+}
+
+.tool-btn,
+.icon-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--graphite-2);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease), color var(--motion-fast) var(--ease);
+}
+.tool-btn {
+  width: var(--tool-size);
+  height: var(--tool-size);
+  border-radius: var(--radius-md);
+}
+.icon-btn {
+  width: var(--control-h);
+  height: var(--control-h);
+  border-radius: var(--radius-sm);
+}
+.tool-btn:hover:not(:disabled),
+.icon-btn:hover:not(:disabled) {
+  background: var(--hover);
+  color: var(--graphite);
+}
+.tool-btn:active:not(:disabled),
+.icon-btn:active:not(:disabled) {
+  background: var(--pressed);
+}
+.tool-btn[aria-pressed="true"],
+.tool-btn[aria-pressed="true"]:hover {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+.tool-btn:disabled,
+.icon-btn:disabled {
+  color: var(--disabled);
+  cursor: default;
+}
+.icon-btn.danger:hover:not(:disabled) {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* Each ink tool shows the colour it will draw with. */
+.ink-dot {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 1.5px var(--surface-solid);
+  transition: background var(--motion-fast) var(--ease);
+}
+
+/* ---------- tool dock ---------- */
+
+.dock-area {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: var(--space-3);
+  transform: translateY(-50%);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  pointer-events: none;
+  z-index: 2;
+}
+.dock-area > * {
+  pointer-events: auto;
+}
+/* The dock sits above the properties panel so its tooltips are never covered. */
+.dock {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+}
+.dock-sep {
+  height: 1px;
+  margin: 4px 8px;
+  background: var(--line);
+}
+
+/* ---------- tool properties ---------- */
+
+.props {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) 6px;
+  animation: props-in var(--motion-base) var(--ease);
+}
+@keyframes props-in {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+}
+.props-sep {
+  width: 20px;
+  height: 1px;
+  background: var(--line);
+}
+.swatches,
+.sizes {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.swatch {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+}
+.swatch::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 1px rgba(28, 32, 38, 0.12);
+  transition: transform var(--motion-fast) var(--ease), box-shadow var(--motion-fast) var(--ease);
+}
+.swatch:hover::before {
+  transform: scale(1.1);
+}
+.swatch[aria-checked="true"]::before {
+  box-shadow: 0 0 0 2px var(--surface-solid), 0 0 0 4px var(--swatch);
+  transform: scale(0.9);
+}
+.swatch[data-highlighter]::before {
+  border-radius: 6px;
+}
+/*
+ * Colours that would vanish into the panel get an outline: light ones (white chalk) on the
+ * light interface, dark ones (black ink) on the dark interface.
+ */
+:root:not([data-ui="dark"]) .swatch[data-tone="light"]::before,
+:root[data-ui="dark"] .swatch[data-tone="dark"]::before {
+  box-shadow: inset 0 0 0 1.5px var(--line-strong);
+}
+:root:not([data-ui="dark"]) .swatch[data-tone="light"][aria-checked="true"]::before,
+:root[data-ui="dark"] .swatch[data-tone="dark"][aria-checked="true"]::before {
+  box-shadow: inset 0 0 0 1.5px var(--line-strong), 0 0 0 2px var(--surface-solid), 0 0 0 4px var(--graphite-2);
+}
+:root:not([data-ui="dark"]) .ink-dot[data-tone="light"],
+:root[data-ui="dark"] .ink-dot[data-tone="dark"] {
+  box-shadow: 0 0 0 1.5px var(--surface-solid), 0 0 0 2.5px var(--line-strong);
+}
+:root:not([data-ui="dark"]) .size-dot[data-tone="light"] {
+  box-shadow: 0 0 0 1.5px var(--line-strong);
+}
+/* The dots show thickness: near-black ink shows them light on the dark interface. */
+:root[data-ui="dark"] .size-dot[data-tone="dark"] {
+  background: var(--graphite-2);
+}
+:root[data-ui="dark"] .fill-chip[data-tone="dark"] {
+  outline: 1px solid var(--line-strong);
+  outline-offset: 1px;
+}
+:root[data-ui="dark"] .swatch::before {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+:root[data-ui="dark"] .menu-swatch {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+/* Pick any colour: a dashed circle with a plus. */
+.swatch-custom {
+  color: var(--muted);
+}
+.swatch-custom::before {
+  display: none;
+}
+.swatch-custom svg {
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: 50%;
+  transition: color var(--motion-fast) var(--ease), border-color var(--motion-fast) var(--ease);
+}
+.swatch-custom:hover {
+  color: var(--accent-strong);
+}
+.swatch-custom:hover svg {
+  border-color: var(--accent);
+}
+.ink-kind[aria-checked="true"] {
+  color: var(--accent-strong);
+}
+
+.size-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease);
+}
+.size-btn:hover {
+  background: var(--hover);
+}
+.size-btn[aria-checked="true"] {
+  background: var(--accent-soft);
+}
+.size-dot {
+  border-radius: 50%;
+  background: var(--ink);
+}
+.size-dot[data-highlighter] {
+  border-radius: 3px;
+  opacity: 0.65;
+}
+
+.size-btn[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+.size-btn {
+  color: var(--graphite-2);
+}
+.text-size {
+  font-size: var(--text-xs);
+  font-weight: 650;
+}
+.shape-kinds {
+  display: grid;
+  grid-template-columns: repeat(2, 32px);
+  gap: 2px;
+}
+.shape-kinds .size-btn[aria-checked="true"] {
+  color: var(--accent-strong);
+}
+.fill-chip {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 2px solid var(--ink);
+}
+.fill-chip[data-fill="tint"] {
+  background: color-mix(in srgb, var(--ink) 18%, transparent);
+}
+.fill-chip[data-fill="solid"] {
+  background: var(--ink);
+}
+
+.seg-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.size-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.size-field input {
+  width: 36px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: var(--hover);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--graphite);
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.size-field input:focus {
+  background: var(--surface-solid);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 0 3px var(--accent-soft);
+}
+.size-field .size-btn {
+  height: 24px;
+}
+
+/* Not enough height for the panel in one column: two columns, separators dropped. */
+.props.compact {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: start;
+  justify-items: center;
+  gap: var(--space-2) 6px;
+}
+.props.compact > .props-sep {
+  display: none;
+}
+
+/* ---------- selection action bar ---------- */
+
+.selection-bar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 40px;
+  padding: 4px;
+  transform: translateX(-50%);
+  z-index: 3;
+  transition: opacity var(--motion-fast) var(--ease);
+}
+/* Out of the way while the selection is being dragged. */
+.board:active ~ .selection-bar {
+  opacity: 0;
+  pointer-events: none;
+}
+.bar-swatches {
+  display: flex;
+  gap: 0;
+}
+.angle-field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-h);
+  padding: 0 6px 0 4px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.angle-field:hover {
+  background: var(--hover);
+}
+.angle-field input {
+  width: 38px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-weight: 600;
+  text-align: right;
+  color: var(--graphite);
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.angle-field:focus-within {
+  background: var(--surface-solid);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 0 3px var(--accent-soft);
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.swatch.small {
+  width: 28px;
+  height: 28px;
+}
+.swatch.small::before {
+  width: 16px;
+  height: 16px;
+}
+
+.segmented {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--hover);
+}
+.segmented button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 30px;
+  height: 28px;
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease), color var(--motion-fast) var(--ease),
+    box-shadow var(--motion-fast) var(--ease);
+}
+.segmented button:hover {
+  color: var(--graphite);
+}
+.segmented button[aria-checked="true"] {
+  background: var(--surface-solid);
+  color: var(--graphite);
+  box-shadow: 0 1px 2px rgba(28, 32, 38, 0.12), 0 0 0 1px var(--line-soft);
+}
+.segmented.vertical {
+  flex-direction: column;
+}
+.segmented.vertical button {
+  justify-items: start;
+  width: 108px;
+}
+.props-eraser {
+  padding: 6px;
+}
+.props-tools {
+  align-items: stretch;
+  gap: 6px;
+  padding: 6px;
+}
+.tool-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tool-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 176px;
+  height: 36px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--graphite);
+  font-size: var(--text-sm);
+  text-align: start;
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease);
+}
+.tool-toggle:hover {
+  background: var(--hover);
+}
+.tool-toggle > svg {
+  flex: none;
+  color: var(--graphite-2);
+}
+.tool-toggle[aria-checked="true"] > svg {
+  color: var(--accent-strong);
+}
+.tool-toggle-label {
+  flex: 1;
+}
+/* A small on/off switch. */
+.switch {
+  position: relative;
+  flex: none;
+  width: 30px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  background: var(--pressed);
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+  transition: background var(--motion-fast) var(--ease);
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--surface-solid);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: transform var(--motion-fast) var(--ease);
+}
+.tool-toggle[aria-checked="true"] .switch {
+  background: var(--accent);
+}
+.tool-toggle[aria-checked="true"] .switch::after {
+  transform: translateX(12px);
+  background: #ffffff;
+}
+.present-start {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease);
+}
+.present-start:hover {
+  background: var(--accent-strong);
+}
+.present-start kbd {
+  margin-inline-start: auto;
+  border: 0;
+  background: rgba(255, 255, 255, 0.2);
+  color: inherit;
+}
+
+/* ---------- presentation: spotlight and screen shade ---------- */
+
+/* Over the board, under the tool panels; the pointer passes through to the board. */
+.spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    circle var(--spot-r) at var(--spot-x) var(--spot-y),
+    transparent calc(var(--spot-r) - 1.5px),
+    rgba(12, 14, 18, 0.8) var(--spot-r)
+  );
+}
+.shade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  background: #2a2f37;
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.08), 0 -6px 18px rgba(0, 0, 0, 0.25);
+  cursor: ns-resize;
+  touch-action: none;
+  outline: none;
+}
+.shade:focus-visible {
+  box-shadow: inset 0 3px 0 var(--focus-ring);
+}
+.shade-grip {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 56px;
+  height: 5px;
+  margin-left: -28px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.35);
+}
+.shade-hint {
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.4);
+  user-select: none;
+  pointer-events: none;
+}
+.present-bar {
+  top: var(--space-3);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 40px;
+  padding: 4px 4px 4px 12px;
+}
+.present-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--graphite-2);
+}
+.present-label {
+  margin: 0 8px 0 6px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--graphite);
+  white-space: nowrap;
+}
+.present-sep {
+  align-self: stretch;
+  width: 1px;
+  margin: 4px 2px;
+  background: var(--line);
+}
+.present-text-btn {
+  height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--graphite);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.present-text-btn:hover {
+  background: var(--hover);
+}
+.present-bar .size-btn:disabled {
+  color: var(--faint);
+  cursor: default;
+  background: transparent;
+}
+
+/* ---------- page actions & zoom ---------- */
+
+.page-actions {
+  top: var(--space-3);
+  inset-inline-end: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  z-index: 2;
+}
+.page-actions .segmented button {
+  width: 32px;
+  padding: 0;
+}
+
+.zoom {
+  bottom: var(--space-3);
+  inset-inline-end: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  z-index: 2;
+}
+.zoom-value {
+  position: relative;
+  min-width: 52px;
+  height: var(--control-h);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--graphite-2);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease);
+}
+.zoom-value:hover {
+  background: var(--hover);
+}
+.zoom-sep {
+  width: 1px;
+  height: 18px;
+  margin: 0 2px;
+  background: var(--line);
+}
+
+/* ---------- pages ---------- */
+
+.pages-area {
+  position: absolute;
+  bottom: var(--space-3);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  pointer-events: none;
+  z-index: 2;
+}
+.pages-area > * {
+  pointer-events: auto;
+}
+.page-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+}
+.page-current {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  min-width: 104px;
+  max-width: 240px;
+  height: var(--control-h);
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  line-height: var(--control-h);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease);
+}
+.page-current:hover {
+  background: var(--hover);
+}
+.page-current-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  color: var(--graphite);
+}
+.page-current-count {
+  flex: none;
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.page-strip {
+  position: relative;
+  /* Clear of the tool dock on the left (and its mirror on the right); the list scrolls. */
+  max-width: min(940px, calc(100vw - 264px));
+  padding: 10px 10px 6px;
+  animation: strip-in var(--motion-base) var(--ease);
+}
+@keyframes strip-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.page-list {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 3px 3px 0;
+  list-style: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scroll-padding: 0 12px;
+}
+.page-card {
+  position: relative;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 128px;
+}
+.page-thumb {
+  display: block;
+  width: 128px;
+  height: 80px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: 0 0 0 1px var(--line);
+  cursor: pointer;
+  touch-action: none;
+  transition: box-shadow var(--motion-fast) var(--ease);
+}
+.page-thumb:hover {
+  box-shadow: 0 0 0 1px var(--line-strong), 0 2px 6px rgba(28, 32, 38, 0.08);
+}
+.page-thumb:focus-visible {
+  outline-offset: 3px;
+}
+.page-card[data-active] .page-thumb {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.page-card[data-dragging] {
+  z-index: 3;
+  cursor: grabbing;
+}
+.page-card[data-dragging] .page-thumb {
+  box-shadow: 0 0 0 2px var(--accent), var(--shadow-2);
+  cursor: grabbing;
+}
+.page-list[data-dragging] .page-more {
+  visibility: hidden;
+}
+.page-canvas {
+  display: block;
+  width: 128px;
+  height: 80px;
+}
+.page-more {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-1);
+  color: var(--graphite-2);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--motion-fast) var(--ease);
+}
+.page-card:hover .page-more,
+.page-card:focus-within .page-more {
+  opacity: 1;
+}
+.page-more:hover {
+  color: var(--graphite);
+  background: var(--hover);
+}
+.page-name {
+  overflow: hidden;
+  padding: 0 4px;
+  font-size: var(--text-xs);
+  line-height: 20px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
+  cursor: default;
+}
+.page-card[data-active] .page-name {
+  font-weight: 600;
+  color: var(--graphite);
+}
+.page-name-input {
+  width: 100%;
+  height: 20px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--surface-solid);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 0 3px var(--accent-soft);
+  font-size: var(--text-xs);
+  text-align: center;
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.page-add {
+  display: grid;
+  place-items: center;
+  width: 128px;
+  height: 80px;
+  padding: 0;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color var(--motion-fast) var(--ease), color var(--motion-fast) var(--ease),
+    background var(--motion-fast) var(--ease);
+}
+.page-add:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+.page-card.add .page-name {
+  color: var(--faint);
+}
+.page-drop-marker {
+  position: absolute;
+  width: 3px;
+  height: 80px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: var(--accent);
+  pointer-events: none;
+}
+
+/* ---------- menus & dialogs ---------- */
+
+.menu {
+  position: fixed;
+  z-index: 30;
+  min-width: 200px;
+  padding: 4px;
+  border-radius: var(--radius-md);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-2);
+  animation: menu-in var(--motion-fast) var(--ease);
+}
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+}
+.menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 32px;
+  padding: 0 8px 0 10px;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  text-align: start;
+  color: var(--graphite);
+  cursor: pointer;
+}
+.menu button svg {
+  flex: none;
+  color: var(--muted);
+}
+.menu button kbd {
+  margin-inline-start: auto;
+  border: 0;
+  background: transparent;
+  font-weight: 500;
+  color: var(--faint);
+}
+.menu button:hover:not(:disabled),
+.menu button:focus-visible {
+  background: var(--hover);
+  outline: none;
+}
+.menu button:disabled {
+  color: var(--faint);
+  cursor: default;
+}
+.menu button:disabled svg {
+  color: var(--disabled);
+}
+.menu button.danger:not(:disabled),
+.menu button.danger:not(:disabled) svg {
+  color: var(--danger);
+}
+.menu button.danger:hover:not(:disabled),
+.menu button.danger:focus-visible {
+  background: var(--danger-soft);
+}
+.menu-sep {
+  display: block;
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--line);
+}
+
+.menu-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 4px 2px 10px;
+}
+.menu-row-label {
+  flex: 1;
+  margin-inline-end: 8px;
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+.menu button.menu-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+}
+.menu button.menu-icon[aria-pressed="true"] {
+  background: var(--accent-soft);
+}
+.menu button.menu-icon[aria-pressed="true"] svg {
+  color: var(--accent-strong);
+}
+.menu-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(28, 32, 38, 0.22);
+}
+.menu button.menu-icon[aria-pressed="true"] .menu-swatch {
+  box-shadow: 0 0 0 2px var(--surface-solid), 0 0 0 3.5px var(--accent);
+}
+
+dialog.confirm {
+  width: min(400px, calc(100vw - 32px));
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-2);
+  color: var(--graphite);
+}
+dialog.confirm[open] {
+  animation: dialog-in var(--motion-base) var(--ease);
+}
+dialog.confirm::backdrop {
+  background: var(--backdrop);
+}
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+}
+dialog.confirm h2 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+dialog.confirm p {
+  margin: 0 0 var(--space-5);
+  color: var(--muted);
+}
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+.btn {
+  height: var(--control-h);
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--hover);
+  font-weight: 600;
+  color: var(--graphite);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease);
+}
+.btn:hover {
+  background: var(--pressed);
+}
+.btn.danger {
+  background: var(--danger);
+  color: #fff;
+}
+.btn.danger:hover {
+  background: #9a1d13;
+}
+.btn:focus-visible {
+  outline-offset: 2px;
+}
+
+/* ---------- export dialog ---------- */
+
+.export-dialog form {
+  margin: 0;
+}
+.choice-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: var(--space-3) 0 var(--space-2);
+  padding: 0;
+  border: 0;
+}
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.choice:hover {
+  background: var(--hover);
+}
+.choice input[type="radio"] {
+  margin: 0;
+  accent-color: var(--accent);
+}
+.choice-note {
+  margin-inline-start: 4px;
+  color: var(--muted);
+}
+.range-input {
+  width: 140px;
+  height: 28px;
+  margin-inline-start: auto;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: var(--surface-solid);
+  box-shadow: 0 0 0 1px var(--line);
+  font-variant-numeric: tabular-nums;
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.range-input:focus {
+  box-shadow: 0 0 0 1px var(--accent), 0 0 0 3px var(--accent-soft);
+}
+.field-error {
+  margin: 0 0 var(--space-3) !important;
+  color: var(--danger) !important;
+}
+.btn.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.btn.primary:hover {
+  background: var(--accent-strong);
+}
+.btn.small {
+  flex: none;
+  height: 28px;
+  margin-top: -4px;
+  padding: 0 10px;
+  font-size: var(--text-xs);
+}
+
+.dialog-file {
+  margin: 0 0 var(--space-1) !important;
+  color: var(--graphite) !important;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.choice[aria-disabled="true"] {
+  color: var(--faint);
+  cursor: default;
+}
+
+.quality-choice {
+  width: max-content;
+  margin: 0 0 var(--space-1);
+}
+.quality-choice button {
+  min-width: 84px;
+}
+dialog.confirm p.choice-help {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-xs);
+}
+
+/* ---------- keyboard shortcuts ---------- */
+
+dialog.shortcuts-dialog {
+  width: min(720px, calc(100vw - 32px));
+}
+.shortcuts-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-2) var(--space-5);
+  max-height: min(64vh, calc(100vh - 160px));
+  margin: var(--space-3) 0 var(--space-4);
+  overflow-y: auto;
+  padding-inline-end: 4px;
+}
+.shortcuts-body section {
+  break-inside: avoid;
+}
+.shortcuts-body h3 {
+  margin: var(--space-2) 0 var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--muted);
+}
+.shortcuts-body dl {
+  margin: 0;
+}
+.shortcut-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: 3px 0;
+  font-size: var(--text-sm);
+}
+.shortcut-row dt {
+  flex: none;
+  width: 132px;
+}
+.shortcut-row dt kbd {
+  white-space: nowrap;
+}
+.shortcut-row dd {
+  margin: 0;
+  color: var(--graphite);
+}
+
+/* ---------- dropping files ---------- */
+
+.drop-hint {
+  position: absolute;
+  inset: var(--space-3);
+  z-index: 25;
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--accent);
+  border-radius: var(--radius-lg);
+  background: rgba(11, 122, 117, 0.06);
+  pointer-events: none;
+  animation: notice-in var(--motion-fast) var(--ease);
+}
+.drop-hint p {
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-1);
+  font-weight: 600;
+  color: var(--accent-strong);
+}
+
+/* ---------- tooltips ---------- */
+
+.tip {
+  position: absolute;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 5px 8px;
+  border-radius: var(--radius-xs);
+  background: var(--tip-bg);
+  color: var(--tip-fg);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  line-height: 16px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--motion-fast) var(--ease), visibility 0s linear var(--motion-fast);
+}
+.tip kbd {
+  border: 0;
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+.tip[data-side="right"] {
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+.tip[data-side="bottom"] {
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.tip[data-side="top"] {
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+/* Delay on hover so passing over the dock does not flash tips; immediate for keyboard focus. */
+:hover > .tip {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--motion-fast) var(--ease) 450ms, visibility 0s linear 450ms;
+}
+:focus-visible > .tip {
+  opacity: 1;
+  visibility: visible;
+  transition: none;
+}
+:active > .tip {
+  opacity: 0;
+  visibility: hidden;
+  transition: none;
+}
+.page-actions .tip[data-side="bottom"],
+.board-title .tip {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+.board-title .tip {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+/* ---------- notices ---------- */
+
+.notices {
+  position: absolute;
+  top: var(--space-3);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: min(520px, calc(100% - 200px));
+  pointer-events: none;
+  z-index: 5;
+}
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-2) var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading);
+  pointer-events: auto;
+  user-select: text;
+  -webkit-user-select: text;
+  animation: notice-in var(--motion-base) var(--ease);
+}
+@keyframes notice-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+.notice > svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--accent);
+}
+.notice p {
+  flex: 1;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.notice .icon-btn {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  margin-top: -4px;
+}
+.notice[data-tone="warn"] > svg {
+  color: var(--warn);
+}
+.notice[data-tone="error"] {
+  background: var(--danger-soft);
+  box-shadow: 0 0 0 1px rgba(180, 35, 24, 0.22), 0 10px 28px rgba(28, 32, 38, 0.1);
+}
+.notice[data-tone="error"] > svg {
+  color: var(--danger);
+}
+
+/* ---------- small windows ---------- */
+
+@media (max-width: 960px) {
+  .brand-name {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .save-status span {
+    display: none;
+  }
+  .board-title,
+  .board-title-input {
+    max-width: 180px;
+  }
+  .notices {
+    width: calc(100% - 32px);
+    top: 64px;
+  }
+}
+@media (max-height: 560px) {
+  .dock-area {
+    top: var(--space-3);
+    transform: none;
+  }
+  .tool-btn {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* ---------- presentation mode ---------- */
+
+/* Only the board: the title bar, tools, page and zoom bars step aside. */
+.app[data-presenting] .titlebar,
+.app[data-presenting] .dock-area,
+.app[data-presenting] .page-actions,
+.app[data-presenting] .zoom,
+.app[data-presenting] .pages-area,
+.app[data-presenting] .empty-hint,
+.app[data-presenting] .selection-bar {
+  display: none;
+}
+.present-dock {
+  bottom: var(--space-4);
+  left: 50%;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px;
+  transform: translateX(-50%);
+  transition: opacity 260ms var(--ease), transform 260ms var(--ease);
+  animation: dock-up var(--motion-base) var(--ease);
+}
+@keyframes dock-up {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+}
+/* Idle: out of sight, back as soon as the mouse moves. */
+.present-dock[data-idle] {
+  opacity: 0;
+  transform: translate(-50%, 10px);
+  pointer-events: none;
+}
+.present-colors {
+  display: flex;
+  gap: 0;
+}
+.present-page {
+  min-width: 56px;
+  text-align: center;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--graphite);
+}
+.present-page span {
+  font-weight: 400;
+  color: var(--muted);
+}
+.present-exit:hover:not(:disabled) {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* ---------- one-time tips ---------- */
+
+.hint {
+  position: absolute;
+  bottom: 76px;
+  left: 50%;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: max-content;
+  max-width: min(520px, calc(100% - 32px));
+  padding: 10px 10px 10px 14px;
+  border-radius: var(--radius-md);
+  background: var(--tip-bg);
+  color: var(--tip-fg);
+  box-shadow: var(--shadow-2);
+  transform: translateX(-50%);
+  animation: hint-in var(--motion-base) var(--ease);
+}
+@keyframes hint-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 6px);
+  }
+}
+.hint > svg {
+  flex: none;
+  color: #ffd166;
+}
+.hint p {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
+.hint-close {
+  flex: none;
+  height: 28px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: rgba(255, 255, 255, 0.14);
+  color: inherit;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+}
+.hint-close:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+.app[data-presenting] .hint {
+  bottom: 88px;
+}
+
+/* ---------- touch screens ---------- */
+
+/* A finger needs bigger targets than a mouse: larger controls when touch is the main input. */
+@media (pointer: coarse) {
+  :root {
+    --tool-size: 48px;
+    --control-h: 40px;
+  }
+  .swatch,
+  .size-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .swatch::before {
+    width: 24px;
+    height: 24px;
+  }
+  .menu button {
+    height: 40px;
+  }
+  .menu button.menu-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .tool-toggle,
+  .present-start {
+    height: 44px;
+  }
+  .shape-kinds {
+    grid-template-columns: repeat(2, 40px);
+  }
+}
+
+/* ---------- board tools: insert actions ---------- */
+
+.tool-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- timer ---------- */
+
+.timer {
+  top: 64px;
+  inset-inline-end: var(--space-3);
+  z-index: 4;
+  width: 248px;
+  padding: 10px 12px 12px;
+  animation: props-in var(--motion-base) var(--ease);
+}
+.app[data-presenting] .timer {
+  top: var(--space-3);
+}
+.timer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.timer-mode button {
+  min-width: 78px;
+}
+.timer-digits {
+  margin: 10px 0 6px;
+  font-family: var(--font-display);
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--graphite);
+}
+.timer[data-done] .timer-digits {
+  font-size: 30px;
+  line-height: 46px;
+  color: var(--danger);
+  animation: timer-ring 1s var(--ease) 3;
+}
+@keyframes timer-ring {
+  50% {
+    transform: scale(1.06);
+  }
+}
+.timer-bar {
+  height: 3px;
+  margin: 0 0 10px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  transform-origin: left center;
+  transition: transform 200ms linear;
+}
+.timer-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.timer-go {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.timer-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 10px;
+}
+.timer-presets button,
+.chip {
+  height: 26px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--hover);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--graphite-2);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease), color var(--motion-fast) var(--ease);
+}
+.timer-presets button:hover:not(:disabled),
+.chip:hover {
+  background: var(--pressed);
+  color: var(--graphite);
+}
+.timer-presets button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+.timer-presets button:disabled {
+  color: var(--disabled);
+  cursor: default;
+}
+
+/* ---------- plot, equation and version dialogs ---------- */
+
+dialog.plot-dialog,
+dialog.equation-dialog {
+  width: min(440px, calc(100vw - 32px));
+}
+dialog.versions-dialog {
+  width: min(640px, calc(100vw - 32px));
+}
+.formula-input {
+  display: block;
+  width: 100%;
+  margin: var(--space-3) 0 var(--space-2);
+  padding: 8px 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--surface-solid);
+  box-shadow: 0 0 0 1px var(--line);
+  font-size: 16px;
+  color: var(--graphite);
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.formula-input:focus {
+  box-shadow: 0 0 0 1px var(--accent), 0 0 0 3px var(--accent-soft);
+}
+.tex-input {
+  resize: vertical;
+  min-height: 64px;
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.symbol-row,
+.example-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0 0 6px;
+}
+.symbol-btn {
+  min-width: 32px;
+  height: 30px;
+  padding: 0 7px;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: var(--hover);
+  font-family: "Cambria Math", "Segoe UI Symbol", var(--font-ui);
+  font-size: 14px;
+  color: var(--graphite);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease);
+}
+.symbol-btn:hover {
+  background: var(--pressed);
+}
+.example-row {
+  margin-top: 4px;
+}
+.chip {
+  font-family: "Cambria Math", var(--font-ui);
+}
+.plot-preview {
+  display: block;
+  margin: 4px 0 6px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 1px var(--line);
+}
+dialog.confirm p.dialog-help,
+.dialog-help {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+.dialog-help code {
+  padding: 0 3px;
+  border-radius: 4px;
+  background: var(--hover);
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 11px;
+  color: var(--graphite-2);
+}
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: var(--space-2) 0 var(--space-4);
+  cursor: pointer;
+}
+.check-row input {
+  margin: 0;
+  accent-color: var(--accent);
+}
+.equation-preview {
+  display: grid;
+  place-items: center;
+  min-height: 96px;
+  margin: 0 0 var(--space-2);
+  padding: var(--space-3);
+  overflow: auto;
+  border-radius: var(--radius-sm);
+  /* The equation is shown on the board colour it will be drawn on. */
+  background: var(--board-paper, #ffffff);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.equation-svg svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.versions-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--space-4);
+  margin: var(--space-3) 0 var(--space-4);
+}
+.versions-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-inline-end: 4px;
+}
+.versions-day {
+  margin: var(--space-2) 0 2px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--muted);
+}
+.version-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  text-align: start;
+  cursor: pointer;
+}
+.version-item:hover {
+  background: var(--hover);
+}
+.version-item[aria-selected="true"] {
+  background: var(--accent-soft);
+}
+.version-time {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--graphite);
+}
+.version-reason {
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+.versions-preview canvas,
+.versions-placeholder {
+  display: block;
+  width: 320px;
+  height: 200px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.versions-placeholder {
+  background: var(--hover);
+}
+.versions-preview .dialog-help {
+  margin-top: 6px;
+}
+.versions-empty {
+  display: flex;
+  gap: 10px;
+  color: var(--muted);
+}
+.versions-empty p {
+  margin: 0 !important;
+  font-size: var(--text-xs);
+}
+.versions-save {
+  margin-inline-end: auto;
+}
+@media (max-width: 640px) {
+  .versions-body {
+    grid-template-columns: 1fr;
+  }
+}

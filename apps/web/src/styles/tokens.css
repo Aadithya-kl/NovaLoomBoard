@@ -1,0 +1,124 @@
+/*
+ * NovaLoomBoard design tokens.
+ * Quiet graphite chrome around a paper-white board: the drawing is always
+ * the most colourful thing on screen. One accent (ink teal) marks state.
+ */
+:root {
+  /* Type: the native Windows 11 face, so the app feels at home on the desktop. */
+  --font-ui: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, "Noto Sans Arabic",
+    sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  --font-glyphs: "Segoe Fluent Icons", "Segoe MDL2 Assets";
+
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-md: 14px;
+  --leading: 1.45;
+
+  /* Spacing (4 px grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+
+  /* Radii: larger for containers, smaller for the controls inside them. */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+
+  /* Sizes */
+  --titlebar-h: 40px;
+  --control-h: 32px;
+  --tool-size: 40px;
+
+  /* Colour */
+  --paper: #ffffff;
+  --chrome: #f7f8f9;
+  --surface: rgba(255, 255, 255, 0.94);
+  --surface-solid: #ffffff;
+  --line: #e3e6ea;
+  --line-soft: rgba(28, 32, 38, 0.07);
+  --graphite: #1c2026;
+  --graphite-2: #3b414b;
+  --muted: #6b717c;
+  --faint: #9aa0aa;
+  --hover: rgba(28, 32, 38, 0.055);
+  --pressed: rgba(28, 32, 38, 0.1);
+
+  --accent: #0b7a75;
+  --accent-strong: #08615d;
+  --accent-soft: rgba(11, 122, 117, 0.11);
+  --focus-ring: rgba(11, 122, 117, 0.5);
+
+  --warn: #a35f00;
+  --warn-soft: #fff7e8;
+  --danger: #b42318;
+  --danger-soft: #fef3f2;
+  --close-red: #c42b1c;
+  --close-red-pressed: #b3261a;
+  --disabled: #c3c7ce;
+  --line-strong: #c5cad2;
+  --on-accent: #ffffff;
+  --tip-bg: #1c2026;
+  --tip-fg: #ffffff;
+  --backdrop: rgba(28, 32, 38, 0.24);
+
+  /* Elevation: a crisp edge plus one soft, low shadow. */
+  --shadow-1: 0 0 0 1px var(--line-soft), 0 1px 2px rgba(28, 32, 38, 0.06), 0 4px 14px rgba(28, 32, 38, 0.06);
+  --shadow-2: 0 0 0 1px var(--line-soft), 0 2px 4px rgba(28, 32, 38, 0.06), 0 10px 28px rgba(28, 32, 38, 0.1);
+
+  /* Motion: short and only in answer to the user. */
+  --motion-fast: 110ms;
+  --motion-base: 170ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/*
+ * Dark interface: follows Windows dark mode, and comes on for dark boards (chalkboard,
+ * black) so the tools do not glare around them. Set on <html> by useUiTheme.
+ */
+:root[data-ui="dark"] {
+  color-scheme: dark;
+  --paper: #17191c;
+  --chrome: #1d2025;
+  --surface: rgba(38, 42, 48, 0.9);
+  --surface-solid: #272b31;
+  --line: #3a3f47;
+  --line-soft: rgba(255, 255, 255, 0.07);
+  --line-strong: #555c66;
+  --graphite: #eceef1;
+  --graphite-2: #c9cdd4;
+  --muted: #9ba1ab;
+  --faint: #6e747e;
+  --disabled: #5a6069;
+  --hover: rgba(255, 255, 255, 0.07);
+  --pressed: rgba(255, 255, 255, 0.12);
+
+  --accent: #2fb5ad;
+  --accent-strong: #6fd6cf;
+  --accent-soft: rgba(47, 181, 173, 0.2);
+  --focus-ring: rgba(111, 214, 207, 0.6);
+  --on-accent: #08201e;
+
+  --warn: #f2b660;
+  --warn-soft: rgba(242, 182, 96, 0.12);
+  --danger: #f6776d;
+  --danger-soft: rgba(246, 119, 109, 0.13);
+
+  --tip-bg: #444a53;
+  --tip-fg: #ffffff;
+  --backdrop: rgba(0, 0, 0, 0.5);
+
+  --shadow-1: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.35), 0 6px 18px rgba(0, 0, 0, 0.3);
+  --shadow-2: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 2px 6px rgba(0, 0, 0, 0.35), 0 14px 36px rgba(0, 0, 0, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+  }
+}

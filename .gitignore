@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+release/
+.vite/
+# Copied from pdfjs-dist at build time (see apps/web/vite.config.ts)
+apps/web/public/pdfjs/
+*.tsbuildinfo
+coverage/
+
+# Logs and temporary files
+*.log
+*.tmp
+.cache/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+# Microsoft Store identity from Partner Center (see apps/desktop/store-identity.example.json)
+apps/desktop/store-identity.json
+*.pfx
+*.p12
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

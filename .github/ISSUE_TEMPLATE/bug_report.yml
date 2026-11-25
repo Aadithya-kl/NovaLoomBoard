@@ -1,0 +1,55 @@
+name: Bug report
+description: Something doesn't work as it should.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please search existing issues first.
+        Security problems go through SECURITY.md, not public issues.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Choose the Pen tool
+        2. Draw across two pages
+        3. …
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: NovaLoomBoard version or commit
+      placeholder: 0.1.0, or a commit hash
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 24H2
+    validations:
+      required: true
+  - type: dropdown
+    id: input
+    attributes:
+      label: Input device
+      multiple: true
+      options:
+        - Mouse or touchpad
+        - Pen
+        - Touch
+        - Keyboard only
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots, recordings or anything else
+      description: Please don't attach boards with private content.

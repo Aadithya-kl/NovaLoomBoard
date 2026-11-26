@@ -19,7 +19,7 @@ Security problems go through [SECURITY.md](SECURITY.md), not public issues.
 
 ## Suggesting features
 
-Open an issue with the **Feature request** template. Describe the problem you want solved before the solution you have in mind. That makes it easier to find the design that fits the rest of the app.
+Open an issue with the **Feature request** template. Describe the problem you want solved before the solution you have in mind. That makes it easier to find the design that fits the rest of the app. The [roadmap](ROADMAP.md) explains the project's principles and priorities, and lists what is [not planned](ROADMAP.md#not-planned).
 
 NovaLoomBoard is deliberately local-first: no accounts, no servers, no telemetry. Features that need those are unlikely to be accepted into the core app.
 

@@ -131,7 +131,7 @@ Boards are SQLite databases with the `.nlboard` extension, stored in `%LOCALAPPD
 
 ## Contributing
 
-Contributions are welcome: bug reports, ideas, documentation and code. Start with [CONTRIBUTING.md](CONTRIBUTING.md), and please follow the [Code of Conduct](CODE_OF_CONDUCT.md). To report a security issue, follow [SECURITY.md](SECURITY.md) instead of opening a public issue.
+Contributions are welcome: bug reports, ideas, documentation and code. See the [roadmap](ROADMAP.md) for where the project is heading, then start with [CONTRIBUTING.md](CONTRIBUTING.md), and please follow the [Code of Conduct](CODE_OF_CONDUCT.md). To report a security issue, follow [SECURITY.md](SECURITY.md) instead of opening a public issue.
 
 ## License
 

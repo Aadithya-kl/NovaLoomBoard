@@ -14,7 +14,7 @@ Output goes to `apps/desktop/release/dist/`.
 
 The installer is one-click and per-user. It installs to `%LOCALAPPDATA%\Programs\novaloomboard` and creates a desktop shortcut. Boards live separately in `%LOCALAPPDATA%\NovaLoomBoard`, and uninstalling never removes them.
 
-The installer is not code-signed. Windows SmartScreen will warn about it until it is signed with a code-signing certificate, or the app is distributed through the Microsoft Store, which signs packages itself.
+The installer is not code-signed. Windows SmartScreen will warn about it until it is signed with a code-signing certificate, or the app is distributed through the Microsoft Store, which signs packages itself. The options are compared in [planning/windows-signing-comparison.md](planning/windows-signing-comparison.md), and the decision is tracked in [issue #1](https://github.com/ghaithheni/NovaLoomBoard/issues/1).
 
 ## Microsoft Store
 
